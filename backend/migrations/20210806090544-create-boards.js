@@ -8,14 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userId: {
-        type: Sequelize.INTEGER,
-      },
       title: {
         type: Sequelize.STRING,
       },
       content: {
         type: Sequelize.STRING,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
       },
       like: {
         type: Sequelize.INTEGER,
@@ -24,6 +24,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
       },
       createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },

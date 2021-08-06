@@ -34,41 +34,42 @@ module.exports = {
       try {
         let salted = await bcrypt.genSalt(saltRound);
         let hashedPassword = await bcrypt.hash(password, salted);
+
         const createdUser = await Users.create({
           email,
           nickname,
           password: hashedPassword,
         });
-        let token = generateToken(createdUser.id);
-        res.send({ data: "OK", token });
+
+        res.send({ data: "OK" });
       } catch (err) {
         throw err;
       }
     }
   }),
   login: asyncHandler(async (req, res) => {
-    res.send("login");
+    const { email, password } = req.body;
+
+    const user = await Users.findOne({
+      where: { email: email },
+    });
+
+    if (!user) {
+      res.status(403);
+      throw new Error("존재하지 않는 이메일");
+    } else {
+      try {
+        const result = await bcrypt.compare(password, user.password);
+        if (result) {
+          let token = generateToken(user.id);
+          res.send({ token, user });
+        } else {
+          res.status(403);
+          throw new Error("비밀번호 틀림");
+        }
+      } catch (err) {
+        throw err;
+      }
+    }
   }),
 };
-
-// bcrypt.genSalt(saltRound, (err, salt) => {
-//   bcrypt.hash(password, salt, async (err, hash) => {
-//     try {
-//       if (hash) {
-//         const createUser = await Users.create({
-//           email,
-//           nickname,
-//           password: hash,
-//         });
-
-//         let token = generateToken(createUser.id);
-
-//         res.send({ data: "OK" });
-//       } else {
-//         throw new Error("해쉬 오류");
-//       }
-//     } catch (err) {
-//       throw err;
-//     }
-//   });
-// });

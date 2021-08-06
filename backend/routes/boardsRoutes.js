@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const boardsControllers = require("../controllers/boardsControllers.js");
+const { auth } = require("../middlewares/auth");
 
-router.post("/:id", boardsControllers.postList);
+router.post("/", auth, boardsControllers.postList);
 router.get("/", boardsControllers.getList);
 router.get("/:id", boardsControllers.getListDetail);
 router.delete("/:id", boardsControllers.deleteOneList);

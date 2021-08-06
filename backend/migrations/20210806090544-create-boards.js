@@ -19,9 +19,11 @@ module.exports = {
       },
       like: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       isLike: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

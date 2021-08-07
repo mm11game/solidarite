@@ -30,7 +30,10 @@ module.exports = {
   }),
 
   getList: asyncHandler(async (req, res) => {
-    res.send("2");
+    let boards = await Boards.findAll({
+      include: [{ model: Users, attributes: ["nickname"] }],
+    });
+    res.send(boards);
   }),
   getListDetail: asyncHandler(async (req, res) => {
     res.send("3");

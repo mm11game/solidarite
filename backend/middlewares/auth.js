@@ -14,7 +14,6 @@ module.exports = {
     if (token.startsWith("Bearer")) {
       try {
         let decoded = verifyToken(token.split(" ")[1]);
-        //{ data: 12, iat: 1628249080 }
         req.tokenUser = await Users.findOne({
           where: { id: decoded.data },
           attributes: { exclude: ["password"] },

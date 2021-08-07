@@ -31,10 +31,12 @@ module.exports = {
 
   getList: asyncHandler(async (req, res) => {
     let boards = await Boards.findAll({
+      attributes: { exclude: ["updatedAt"] },
       include: [{ model: Users, attributes: ["nickname"] }],
     });
     res.send(boards);
   }),
+
   getListDetail: asyncHandler(async (req, res) => {
     res.send("3");
   }),

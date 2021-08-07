@@ -7,8 +7,9 @@ module.exports = {
     let token = req.headers.authorization;
 
     if (!token) {
-      res.status(401);
-      throw new Error("인증정보가 없음");
+      req.tokenUser = null;
+      next();
+      return; //여기서 리턴을 안 해주면, 밑에 있는걸 읽는다.
     }
 
     if (token.startsWith("Bearer")) {

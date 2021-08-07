@@ -12,21 +12,6 @@ module.exports = {
       where: { email: email },
     });
 
-    if (email.length === 0 || nickname.length === 0 || password.length === 0) {
-      res.status(400);
-      throw new Error("빈칸이 있음");
-    }
-
-    if (nickname.length > 10) {
-      res.status(403);
-      throw new Error("닉네임 길이가 김");
-    }
-
-    if (password.search(/\d/) == -1 || password.search(/[a-zA-Z]/) == -1) {
-      res.status(403);
-      throw new Error("비번에 문자나 숫자가 없음");
-    }
-
     if (user) {
       res.status(403);
       throw new Error("이미 가입한 사람");
@@ -47,6 +32,7 @@ module.exports = {
       }
     }
   }),
+
   login: asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 

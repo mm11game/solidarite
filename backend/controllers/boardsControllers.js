@@ -38,7 +38,15 @@ module.exports = {
   }),
 
   getListDetail: asyncHandler(async (req, res) => {
-    res.send("3");
+    const boardId = req.params.id;
+    let board = await Boards.findByPk(boardId);
+
+    if (board) {
+      res.send(board);
+    } else {
+      res.status(404);
+      throw new Error("해당 게시물이 없음");
+    }
   }),
   deleteOneList: asyncHandler(async (req, res) => {
     res.send("4");

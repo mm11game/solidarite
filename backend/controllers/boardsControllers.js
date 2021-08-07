@@ -48,9 +48,36 @@ module.exports = {
       throw new Error("해당 게시물이 없음");
     }
   }),
+
   deleteOneList: asyncHandler(async (req, res) => {
-    res.send("4");
+    const boardId = req.params.id;
+
+    const boardByPk = await Boards.findByPk(boardId);
+    if (!boardByPk) {
+      res.status(404);
+      throw new Error("해당 게시물이 없음");
+    }
+
+    const board = await Boards.findOne({
+      where: {
+        id: boardId,
+        userId: req.tokenUser.id,
+      },
+    });
+    if (!board) {
+      res.status(401);
+      throw new Error("해당 게시물의 작성자가 아님");
+    } else {
+      await Boards.destroy({
+        where: {
+          id: boardId,
+          userId: req.tokenUser.id,
+        },
+      });
+      res.send({ data: "OK" });
+    }
   }),
+
   postLike: asyncHandler(async (req, res) => {
     res.send("5");
   }),

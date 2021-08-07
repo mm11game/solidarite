@@ -6,7 +6,7 @@ const { auth } = require("../middlewares/auth");
 router.post("/", auth, boardsControllers.postList);
 router.get("/", boardsControllers.getList);
 router.get("/:id", boardsControllers.getListDetail);
-router.delete("/:id", boardsControllers.deleteOneList);
+router.delete("/:id", auth, boardsControllers.deleteOneList);
 router.post("/:id/like", boardsControllers.postLike);
 
 module.exports = router;

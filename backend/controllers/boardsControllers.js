@@ -36,14 +36,14 @@ module.exports = {
     const boardId = req.params.id;
     const board = await Boards.findByPk(boardId);
 
+    //애초에 게시물이 없을때
     if (!board) {
-      //애초에 게시물이 없을때
       res.status(404);
       throw new Error("해당 게시물이 없음");
     }
 
+    //로그인 하지 않은 상태
     if (!req.tokenUser) {
-      //로그인 하지 않은 상태
       let isLike = false;
       res.send({ ...board.dataValues, isLike });
     } else {
@@ -66,14 +66,14 @@ module.exports = {
   }),
 
   deleteOneList: asyncHandler(async (req, res) => {
-    const boardId = req.params.id;
-    //게시물을 삭제할때 연쇄적으로 Likes에 들어가 있는 애들을 지워줘야한다.
     if (!req.tokenUser) {
       res.status(401);
       throw new Error("인증정보가 없음");
     }
 
+    const boardId = req.params.id;
     const boardByPk = await Boards.findByPk(boardId);
+
     if (!boardByPk) {
       res.status(404);
       throw new Error("해당 게시물이 없음");
@@ -101,9 +101,13 @@ module.exports = {
   }),
 
   postLike: asyncHandler(async (req, res) => {
+    if (!req.tokenUser) {
+      res.status(401);
+      throw new Error("인증정보가 없음");
+    }
+
     const userId = req.tokenUser.id;
     const boardId = req.params.id;
-
     //로그인 된 상태다. 여기서 좋아요를 누르게 되면? likes에 값을 추가한다.
     const like = await Likes.findOne({
       where: {

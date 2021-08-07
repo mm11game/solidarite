@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Users, { foreignKey: "userId" });
+      this.hasMany(models.Likes, { foreignKey: "boardId" });
     }
   }
   Boards.init(
@@ -18,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       like: DataTypes.INTEGER,
-      isLike: DataTypes.BOOLEAN,
     },
     {
       sequelize,

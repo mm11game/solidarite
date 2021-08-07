@@ -1,6 +1,6 @@
 module.exports = {
   wrongRoute: (req, res, next) => {
-    const error = new Error(`Not Found`);
+    const error = new Error(`잘못된 접근입니다`);
     res.status(404);
     next(error);
   },

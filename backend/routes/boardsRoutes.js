@@ -7,6 +7,6 @@ router.post("/", auth, boardsControllers.postList);
 router.get("/", boardsControllers.getList);
 router.get("/:id", boardsControllers.getListDetail);
 router.delete("/:id", auth, boardsControllers.deleteOneList);
-router.post("/:id/like", boardsControllers.postLike);
+router.post("/:id/like", auth, boardsControllers.postLike);
 
 module.exports = router;

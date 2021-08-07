@@ -9,7 +9,7 @@ module.exports = {
     if (!token) {
       req.tokenUser = null;
       next();
-      return; //여기서 리턴을 안 해주면, 밑에 있는걸 읽는다.
+      return;
     }
 
     if (token.startsWith("Bearer")) {

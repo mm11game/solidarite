@@ -26,7 +26,6 @@ module.exports = {
 
   getList: asyncHandler(async (req, res) => {
     let boards = await Boards.findAll({
-      attributes: { exclude: ["updatedAt"] },
       include: [{ model: Users, attributes: ["nickname"] }],
     });
     res.send(boards);
@@ -123,11 +122,12 @@ module.exports = {
       res.send({ ...board.dataValues, isLike });
     } else {
       //좋아요를 안눌렀다면?
-      let isLike = true;
+      let isLike = false;
       const createdLike = await Likes.create({
         userId,
         boardId,
       });
+      isLike = true;
       const countLike = await Likes.count({
         where: {
           boardId,

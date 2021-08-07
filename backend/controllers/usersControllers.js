@@ -7,7 +7,6 @@ const saltRound = 10;
 module.exports = {
   join: asyncHandler(async (req, res) => {
     const { email, nickname, password } = req.body;
-
     const user = await Users.findOne({
       where: { email: email },
     });
@@ -35,7 +34,6 @@ module.exports = {
 
   login: asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-
     const user = await Users.findOne({
       where: { email: email },
     });

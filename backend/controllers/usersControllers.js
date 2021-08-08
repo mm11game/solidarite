@@ -34,7 +34,7 @@ module.exports = {
 
   login: asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    const user = await Users.findOne({
+    let user = await Users.findOne({
       where: { email: email },
     });
 
@@ -43,9 +43,15 @@ module.exports = {
       throw new Error("존재하지 않는 이메일");
     } else {
       try {
-        const result = await bcrypt.compare(password, user.password);
-        if (result) {
+        const corretConfirmed = await bcrypt.compare(password, user.password);
+        if (corretConfirmed) {
           let token = generateToken(user.id);
+
+          user = await Users.findOne({
+            where: { email: email },
+            attributes: { exclude: ["password"] },
+          });
+
           res.send({ token, user });
         } else {
           res.status(403);

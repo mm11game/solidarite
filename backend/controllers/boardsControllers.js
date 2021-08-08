@@ -7,7 +7,7 @@ const likes = require("../models/likes");
 module.exports = {
   postList: asyncHandler(async (req, res) => {
     if (!req.tokenUser) {
-      res.status(404);
+      res.status(401);
       throw new Error("인증정보가 없습니다");
     }
     const { title, content } = req.body;
@@ -35,25 +35,24 @@ module.exports = {
     const boardId = req.params.id;
     const board = await Boards.findByPk(boardId);
 
-    //애초에 게시물이 없을때
     if (!board) {
       res.status(404);
       throw new Error("해당 게시물이 없음");
     }
 
-    //로그인 하지 않은 상태
     if (!req.tokenUser) {
+      //비로그인일때
       let isLike = false;
       res.send({ ...board.dataValues, isLike });
     } else {
-      // 로그인을 한 상태
+      //로그인일때
       let like = await Likes.findOne({
         where: {
           userId: req.tokenUser.id,
           boardId,
         },
       });
-      // 좋아요 버튼을 눌렀었다면?
+      //좋아요를 눌렀는지 여부
       if (like) {
         let isLike = true;
         res.send({ ...board.dataValues, isLike });
@@ -107,7 +106,7 @@ module.exports = {
 
     const userId = req.tokenUser.id;
     const boardId = req.params.id;
-    //로그인 된 상태다. 여기서 좋아요를 누르게 되면? likes에 값을 추가한다.
+
     const like = await Likes.findOne({
       where: {
         userId,
@@ -115,13 +114,12 @@ module.exports = {
       },
     });
 
+    //좋아요 누름 여부
     if (like) {
-      //이미 좋아요를 누른 상태
       let isLike = true;
       const board = await Boards.findByPk(boardId);
       res.send({ ...board.dataValues, isLike });
     } else {
-      //좋아요를 안눌렀다면?
       let isLike = false;
       const createdLike = await Likes.create({
         userId,

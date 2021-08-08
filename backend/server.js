@@ -9,10 +9,6 @@ const { errorHandler, wrongRoute } = require("./middlewares/errerHandler.js");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
 app.use("/api/users", usersRoutes);
 app.use("/api/boards", boardsRoutes);
 

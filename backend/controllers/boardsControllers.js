@@ -121,6 +121,7 @@ module.exports = {
       const board = await Boards.findByPk(boardId);
       res.send({ ...board.dataValues, isLike });
     } else {
+      //cascade로 like 생성방지
       let isLike = false;
       const createdLike = await Likes.create({
         userId,

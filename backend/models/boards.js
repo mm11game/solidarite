@@ -19,10 +19,12 @@ module.exports = (sequelize, DataTypes) => {
       content: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       like: DataTypes.INTEGER,
+      createdAt: DataTypes.DATE,
     },
     {
       sequelize,
       modelName: "Boards",
+      timestamps: false,
     }
   );
   return Boards;

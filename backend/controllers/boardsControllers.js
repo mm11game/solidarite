@@ -16,6 +16,7 @@ module.exports = {
       title,
       content,
       userId: req.tokenUser.id,
+      createdAt: Date.now(),
     });
 
     res.send({
